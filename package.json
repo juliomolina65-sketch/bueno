@@ -1,0 +1,13 @@
+{
+  "name": "bueno",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Bueno — missed-call text-back pages and client sites",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "engines": {
+    "node": ">=18"
+  }
+}

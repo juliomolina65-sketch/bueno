@@ -1,0 +1,143 @@
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Bueno Partners</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700&family=Barlow:wght@400;500;600&display=swap">
+<style>
+  :root{
+    --ground:#FAF7F2; --surface:#FFFFFF; --ink:#201B16; --ink-2:#5C544A;
+    --line:#E4DCD0; --accent:#E8850C; --accent-deep:#8A4D03; --steel:#33566B;
+    --good:#2E7D4F; --plate:#F3EDE3;
+  }
+  @media (prefers-color-scheme: dark){
+    :root:not([data-theme="light"]){
+      --ground:#16130F; --surface:#211D17; --ink:#F2EDE6; --ink-2:#AEA396;
+      --line:#3A332A; --accent:#F19A2C; --accent-deep:#F7C98B; --steel:#8FB3C9;
+      --good:#5CBF8A; --plate:#2C261E;
+    }
+  }
+  :root[data-theme="dark"]{
+    --ground:#16130F; --surface:#211D17; --ink:#F2EDE6; --ink-2:#AEA396;
+    --line:#3A332A; --accent:#F19A2C; --accent-deep:#F7C98B; --steel:#8FB3C9;
+    --good:#5CBF8A; --plate:#2C261E;
+  }
+  *{box-sizing:border-box; margin:0}
+  body{background:var(--ground); color:var(--ink); font-family:"Barlow",system-ui,sans-serif; line-height:1.5; -webkit-font-smoothing:antialiased}
+  .wrap{max-width:880px; margin:0 auto; padding:0 20px}
+  .disp{font-family:"Barlow Condensed","Arial Narrow",sans-serif; letter-spacing:.02em}
+
+  header{padding:16px 0; border-bottom:1px solid var(--line)}
+  .brand{display:flex; align-items:center; gap:10px}
+  .brand .mark{width:34px; height:34px; border-radius:8px; background:var(--accent); color:#231303; display:flex; align-items:center; justify-content:center; font-weight:700; font-family:"Barlow Condensed",sans-serif; font-size:19px}
+  .brand span{font-family:"Barlow Condensed",sans-serif; font-weight:700; font-size:21px; letter-spacing:.04em}
+
+  .hero{padding:56px 0 40px}
+  .hero h1{font-family:"Barlow Condensed",sans-serif; font-weight:700; font-size:clamp(38px,6vw,58px); line-height:1.02; text-wrap:balance; max-width:16ch}
+  .hero h1 em{font-style:normal; color:var(--accent)}
+  .hero .sub{margin-top:18px; font-size:18px; color:var(--ink-2); max-width:56ch}
+  .hero .sub b{color:var(--ink)}
+  .cta{display:inline-block; margin-top:26px; background:var(--accent); color:#231303; text-decoration:none; font-family:"Barlow Condensed",sans-serif; font-weight:700; font-size:21px; letter-spacing:.05em; padding:14px 28px; border-radius:10px}
+  .cta:focus-visible{outline:3px solid var(--steel); outline-offset:2px}
+  .ticks{display:flex; flex-wrap:wrap; gap:8px 22px; margin-top:22px; font-size:14px; color:var(--ink-2)}
+  .ticks span::before{content:"✓ "; color:var(--good); font-weight:700}
+
+  section{padding:38px 0; border-top:1px solid var(--line)}
+  h2{font-family:"Barlow Condensed",sans-serif; font-weight:700; font-size:30px; margin-bottom:18px}
+  .steps{display:grid; grid-template-columns:repeat(auto-fit,minmax(220px,1fr)); gap:14px}
+  .step{background:var(--surface); border:1px solid var(--line); border-radius:12px; padding:18px}
+  .step .n{font-family:"Barlow Condensed",sans-serif; font-weight:700; font-size:15px; color:var(--accent-deep); letter-spacing:.1em}
+  .step h3{font-family:"Barlow Condensed",sans-serif; font-weight:600; font-size:21px; margin:6px 0 6px}
+  .step p{font-size:14.5px; color:var(--ink-2)}
+
+  .tablewrap{overflow-x:auto; -webkit-overflow-scrolling:touch}
+  .math table{width:100%; min-width:400px; border-collapse:collapse; background:var(--surface); border:1px solid var(--line); border-radius:12px; overflow:hidden; font-size:15px}
+  .math th,.math td{padding:11px 14px; text-align:left; border-bottom:1px solid var(--line); font-variant-numeric:tabular-nums}
+  .math th{font-family:"Barlow Condensed",sans-serif; font-weight:600; font-size:16px; letter-spacing:.05em; background:var(--plate)}
+  .math tr:last-child td{border-bottom:0}
+  .math td b{color:var(--accent-deep)}
+  .note{font-size:13px; color:var(--ink-2); margin-top:10px}
+
+  .leads{background:var(--surface); border:1px solid var(--line); border-radius:12px; padding:20px}
+  .leadrow{display:flex; flex-wrap:wrap; gap:12px; margin-top:14px}
+  .leadchip{background:var(--plate); border-radius:10px; padding:12px 16px; flex:1; min-width:150px}
+  .leadchip .num{font-family:"Barlow Condensed",sans-serif; font-weight:700; font-size:30px; color:var(--accent-deep)}
+  .leadchip .lbl{font-size:13px; color:var(--ink-2)}
+
+  .honest{background:var(--plate); border-radius:12px; padding:20px; border:1px dashed var(--line)}
+  .honest h2{font-size:24px}
+  .honest p{font-size:15px; color:var(--ink-2); max-width:64ch}
+  .honest p b{color:var(--ink)}
+
+  .apply .box{background:var(--surface); border:1px solid var(--line); border-radius:12px; padding:22px}
+  .apply label{display:block; font-size:13.5px; font-weight:600; margin:14px 0 5px}
+  .apply input,.apply select,.apply textarea{width:100%; border:1px solid var(--line); border-radius:9px; background:var(--ground); color:var(--ink); font:inherit; font-size:15px; padding:10px 12px}
+  .apply input:focus-visible,.apply select:focus-visible,.apply textarea:focus-visible{outline:2px solid var(--accent); outline-offset:1px}
+  .apply .cta{width:100%; text-align:center; border:0; cursor:pointer}
+  .apply .fine{font-size:12.5px; color:var(--ink-2); margin-top:12px}
+
+  footer{padding:26px 0 40px; border-top:1px solid var(--line); font-size:13px; color:var(--ink-2)}
+</style>
+
+<header><div class="wrap"><div class="brand"><span class="mark">B</span><span>BUENO PARTNERS</span></div></div></header>
+
+<div class="wrap">
+  <div class="hero">
+    <h1>Sell the fix for every <em>missed call</em> in your city.</h1>
+    <p class="sub">Local shops miss about 1 in 4 calls — and every robot phone menu makes customers hang up. Our system texts the customer back in 9 seconds with the shop's booking link. Shops pay <b>$99–149/month</b> for it. You close them; <b>you keep 50% of every subscription, every month, for as long as the client stays.</b></p>
+    <a class="cta" href="#signup">START FREE — SELL TODAY</a>
+    <div class="ticks"><span>Free forever</span><span>No application — sign up and go</span><span>Leads for your city provided</span><span>Script &amp; demo included</span><span>Your own schedule</span></div>
+  </div>
+
+  <section>
+    <h2>HOW IT WORKS</h2>
+    <div class="steps">
+      <div class="step"><div class="n">STEP 1</div><h3>SIGN UP FREE</h3><p>Two minutes: make your profile, pick your city. No application, no interview, no fees — ever. The quick-start training unlocks your lead list.</p></div>
+      <div class="step"><div class="n">STEP 2</div><h3>TRAIN, THEN CALL YOUR CITY'S LEADS</h3><p>A short training camp shows you the product, the calling method and the 30-second phone demo — then your territory's leads open up: new businesses, shops in pain-hours, independents missing calls. All from your couch.</p></div>
+      <div class="step"><div class="n">STEP 3</div><h3>CLOSE &amp; COLLECT</h3><p>Demo on their phone, close at $99–149/mo. We install and support the client. You keep 50% recurring — paid monthly, for the life of the client.</p></div>
+    </div>
+  </section>
+
+  <section class="math">
+    <h2>THE MATH — FACTUAL, NO HYPE</h2>
+    <div class="tablewrap"><table>
+      <tr><th>Clients you've closed</th><th>Client pays</th><th>Your cut / month</th></tr>
+      <tr><td>1 client</td><td>$99/mo</td><td><b>$49.50/mo</b> recurring</td></tr>
+      <tr><td>5 clients</td><td>$99/mo avg</td><td><b>$247/mo</b> recurring</td></tr>
+      <tr><td>10 clients</td><td>$120/mo avg</td><td><b>$600/mo</b> recurring</td></tr>
+      <tr><td>20 clients</td><td>$120/mo avg</td><td><b>$1,200/mo</b> recurring</td></tr>
+    </table></div>
+    <p class="note">These are commission rates, not earnings projections. What you earn depends entirely on how many clients you close and keep. Many people who try commission sales close zero.</p>
+  </section>
+
+  <section>
+    <h2>LEADS FOR YOUR CITY — ALREADY REAL</h2>
+    <div class="leads">
+      <p style="font-size:15px">Our radar pulls from public state data: brand-new businesses applying for licenses (setting up their phones <b>right now</b>), just-opened venues, and shops in distress. Pulled live this week:</p>
+      <div class="leadrow">
+        <div class="leadchip"><div class="num">284</div><div class="lbl">fresh leads — Houston</div></div>
+        <div class="leadchip"><div class="num">137</div><div class="lbl">fresh leads — Dallas</div></div>
+        <div class="leadchip"><div class="num">Any TX county</div><div class="lbl">on request — Austin, San Antonio, Fort Worth…</div></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="honest">
+    <h2>READ THIS BEFORE APPLYING</h2>
+    <p>This is <b>commission-only sales</b>. It is free to join and you will never pay us anything — and that also means no salary and no guarantees. <b>Many people who try sales close zero clients.</b> The partners who earn are the ones who make 10+ calls a day, take the training seriously, and follow up. You earn only from clients you close — never from recruiting anyone. If you want a lottery ticket, this isn't it. If you can grind phone calls, everything you need is provided.</p>
+  </section>
+
+  <section class="apply" id="signup">
+    <h2>CREATE YOUR PROFILE — START TODAY</h2>
+    <div class="box">
+      <form onsubmit="return false">
+        <label for="f-name">Name</label><input id="f-name" placeholder="Your name">
+        <label for="f-email">Email</label><input id="f-email" type="email" placeholder="you@email.com">
+        <label for="f-phone">Phone</label><input id="f-phone" placeholder="(555) 000-0000">
+        <label for="f-city">City you'll sell in</label><input id="f-city" placeholder="Houston, TX">
+        <div style="height:16px"></div>
+        <button class="cta" type="submit">CREATE PROFILE — FREE</button>
+        <p class="fine">Free forever for sellers. Finish the quick-start training and your city's lead list unlocks. By signing up you agree to the seller conduct rules: no spam texting, no robocalling, no income promises to shops — clean selling only. [FORM NOT WIRED YET — connects to your signup system at launch]</p>
+      </form>
+    </div>
+  </section>
+</div>
+
+<footer><div class="wrap">Bueno Partners · Dallas, TX · Independent contractor (1099) commission program · Single-tier: partners earn from their own client sales only, never from recruiting · Free to join</div></footer>

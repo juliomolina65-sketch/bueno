@@ -1,0 +1,10 @@
+# Clean URLs for static hosts (Netlify / Cloudflare Pages).
+# Railway uses server.js instead and ignores this file.
+/b/*        /b.html                 200
+/signup     /signup.html            200
+/partners   /rescue-partners.html   200
+/report     /report.html            200
+/demo       /rescue-demo.html       200
+/privacy    /privacy.html           200
+/terms      /terms.html             200
+/           /rescue-pitch.html      200

@@ -1,0 +1,370 @@
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Bueno — Never Miss a Customer</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700&family=Barlow:wght@400;500;600&display=swap">
+<style>
+  :root{
+    --ground:#FAF7F2; --surface:#FFFFFF; --ink:#201B16; --ink-2:#5C544A;
+    --line:#E4DCD0; --accent:#E8850C; --accent-ink:#8A4D03; --steel:#33566B;
+    --good:#2E7D4F; --bad:#C0392B; --plate:#F3EDE3;
+    --band:#201B16; --band-ink:#F2ECE2; --band-mute:#A89C8C; --band-alert:#FF8358;
+  }
+  @media (prefers-color-scheme: dark){
+    :root:not([data-theme="light"]){
+      --ground:#16130F; --surface:#211D17; --ink:#F2EDE6; --ink-2:#AEA396;
+      --line:#3A332A; --accent:#F19A2C; --accent-ink:#F7C98B; --steel:#8FB3C9;
+      --good:#5CBF8A; --bad:#E4685A; --plate:#2C261E;
+      --band:#2A241C; --band-ink:#F2ECE2; --band-mute:#A89C8C; --band-alert:#FF8358;
+    }
+  }
+  :root[data-theme="dark"]{
+    --ground:#16130F; --surface:#211D17; --ink:#F2EDE6; --ink-2:#AEA396;
+    --line:#3A332A; --accent:#F19A2C; --accent-ink:#F7C98B; --steel:#8FB3C9;
+    --good:#5CBF8A; --bad:#E4685A; --plate:#2C261E;
+    --band:#2A241C; --band-ink:#F2ECE2; --band-mute:#A89C8C; --band-alert:#FF8358;
+  }
+  *{box-sizing:border-box; margin:0}
+  body{background:var(--ground); color:var(--ink); font-family:"Barlow",system-ui,sans-serif; font-size:16.5px; line-height:1.5; -webkit-font-smoothing:antialiased}
+  .wrap{max-width:520px; margin:0 auto; padding:0 18px}
+  .cond{font-family:"Barlow Condensed","Arial Narrow",sans-serif}
+
+  header{padding:14px 0; border-bottom:1px solid var(--line)}
+  header .wrap{display:flex; align-items:center; gap:10px}
+  .logo{width:34px; height:34px; border-radius:8px; background:var(--accent); color:#231303; display:flex; align-items:center; justify-content:center; font-weight:700; font-family:"Barlow Condensed",sans-serif; font-size:19px}
+  .brand{font-family:"Barlow Condensed",sans-serif; font-weight:700; font-size:21px; letter-spacing:.08em}
+  .tag-es{font-size:12.5px; color:var(--ink-2); font-style:italic; letter-spacing:.02em; margin-left:2px}
+
+  .hero{padding:40px 0 30px}
+  .hero h1{font-family:"Barlow Condensed",sans-serif; font-weight:700; font-size:44px; line-height:1.02; letter-spacing:.01em; text-wrap:balance}
+  .hero h1 em{color:var(--accent); font-style:normal}
+  .hero p.sub{margin-top:14px; font-size:17.5px; color:var(--ink-2)}
+  .hero p.sub b{color:var(--ink)}
+  .cta{display:block; text-align:center; margin-top:22px; background:var(--accent); color:#231303; text-decoration:none; font-family:"Barlow Condensed",sans-serif; font-weight:700; font-size:21px; letter-spacing:.06em; padding:16px; border-radius:12px; border:0; width:100%; cursor:pointer}
+  .cta:focus-visible{outline:3px solid var(--steel); outline-offset:2px}
+  .cta--ghost{background:none; border:2px solid var(--accent); color:var(--accent-ink); margin-top:10px}
+
+  .strip{display:flex; gap:8px; margin-top:26px}
+  .strip .st{flex:1; background:var(--surface); border:1px solid var(--line); border-radius:10px; padding:10px 8px; text-align:center}
+  .strip .st .t{font-size:20px}
+  .strip .st p{font-size:11.5px; color:var(--ink-2); margin-top:4px; line-height:1.3}
+  .strip .st b{display:block; font-family:"Barlow Condensed",sans-serif; font-size:13.5px; letter-spacing:.05em; color:var(--ink); margin-top:2px}
+
+  section{padding:30px 0; border-top:1px solid var(--line)}
+  .eyebrow{font-family:"Barlow Condensed",sans-serif; font-weight:600; font-size:15px; letter-spacing:.14em; color:var(--accent-ink)}
+  h2{font-family:"Barlow Condensed",sans-serif; font-weight:700; font-size:30px; line-height:1.05; margin-top:6px; text-wrap:balance}
+  .lede{color:var(--ink-2); margin-top:10px}
+
+  .phone{background:var(--surface); border:1px solid var(--line); border-radius:16px; padding:16px; margin-top:18px}
+  .phone .meta{text-align:center; font-size:12px; color:var(--ink-2); margin-bottom:8px}
+  .miss{display:flex; justify-content:center; align-items:center; gap:6px; color:var(--bad); font-size:13px; margin-bottom:10px}
+  .bubble{max-width:88%; background:var(--plate); border:1px solid var(--line); border-radius:14px; border-bottom-left-radius:4px; padding:11px 14px; font-size:14.5px; line-height:1.45}
+  .bubble a{color:var(--steel); text-decoration:underline; word-break:break-all}
+  .note{display:flex; gap:6px; align-items:center; font-size:12px; color:var(--ink-2); margin-top:8px}
+  .bubble--own{max-width:100%; margin-bottom:8px; border-bottom-left-radius:14px}
+  .frame-wrap{display:flex; justify-content:center; margin-top:18px}
+  .devframe{width:391px; height:636px; border:8px solid var(--ink); border-radius:28px; overflow:hidden; background:var(--surface); box-shadow:0 12px 30px rgba(20,20,15,.18)}
+  .devframe iframe{width:375px; height:620px; border:0; display:block}
+  .demo-open{display:none}
+  @media (max-width:560px){
+    .devframe{display:none}
+    .demo-open{display:block}
+  }
+
+  .calc{background:var(--surface); border:1px solid var(--line); border-radius:14px; padding:18px; margin-top:18px}
+  .calc label{display:flex; justify-content:space-between; font-size:14px; color:var(--ink-2); margin:14px 0 6px}
+  .calc label output{font-variant-numeric:tabular-nums; font-weight:600; color:var(--ink)}
+  .calc input[type=range]{width:100%; accent-color:var(--accent)}
+  .calc .result{margin-top:18px; padding-top:14px; border-top:2px dashed var(--line); display:flex; align-items:baseline; justify-content:space-between}
+  .calc .result span{font-size:14px; color:var(--ink-2)}
+  .calc .result b{font-family:"Barlow Condensed",sans-serif; font-size:38px; color:var(--bad); font-variant-numeric:tabular-nums}
+  .calc .fine{font-size:12px; color:var(--ink-2); margin-top:10px}
+
+  .steps{display:flex; flex-direction:column; gap:10px; margin-top:18px}
+  .step{display:flex; gap:14px; background:var(--surface); border:1px solid var(--line); border-radius:12px; padding:14px 16px}
+  .step .n{font-family:"Barlow Condensed",sans-serif; font-weight:700; font-size:22px; color:var(--accent); flex:none; width:26px}
+  .step h3{font-family:"Barlow Condensed",sans-serif; font-weight:600; font-size:19px; letter-spacing:.03em}
+  .step p{font-size:14px; color:var(--ink-2); margin-top:2px}
+
+  .plans{display:flex; flex-direction:column; gap:12px; margin-top:18px}
+  .plan{background:var(--surface); border:1px solid var(--line); border-radius:14px; padding:18px}
+  .plan--hot{border:2px solid var(--accent); position:relative}
+  .plan--hot .tag{position:absolute; top:-11px; left:16px; background:var(--accent); color:#231303; font-family:"Barlow Condensed",sans-serif; font-weight:700; font-size:13px; letter-spacing:.08em; padding:2px 10px; border-radius:999px}
+  .plan h3{font-family:"Barlow Condensed",sans-serif; font-weight:700; font-size:22px; letter-spacing:.03em}
+  .plan .price{font-family:"Barlow Condensed",sans-serif; font-weight:700; font-size:34px; margin-top:4px}
+  .plan .price small{font-size:15px; color:var(--ink-2); font-weight:400; font-family:"Barlow",sans-serif}
+  .plan ul{list-style:none; margin-top:10px; display:flex; flex-direction:column; gap:6px}
+  .plan li{font-size:14.5px; color:var(--ink-2); padding-left:22px; position:relative}
+  .plan li::before{content:"✓"; position:absolute; left:0; color:var(--good); font-weight:600}
+  .plan--soon{opacity:.75}
+  .plan--soon li::before{content:"•"; color:var(--steel)}
+
+  .faq{margin-top:16px; display:flex; flex-direction:column; gap:8px}
+  .faq details{background:var(--surface); border:1px solid var(--line); border-radius:10px; padding:12px 16px}
+  .faq summary{cursor:pointer; font-weight:600; font-size:15px}
+  .faq summary:focus-visible{outline:2px solid var(--accent); outline-offset:2px}
+  .faq p{margin-top:8px; font-size:14.5px; color:var(--ink-2)}
+
+  .close{background:var(--plate); border-radius:16px; padding:24px 20px; margin:30px 0; text-align:center}
+  .close h2{font-size:28px}
+  .close p{color:var(--ink-2); font-size:15px; margin-top:8px}
+  .close form{margin-top:16px; display:flex; flex-direction:column; gap:10px; text-align:left}
+  .close input{border:1px solid var(--line); border-radius:10px; background:var(--surface); color:var(--ink); font:inherit; font-size:15px; padding:12px 14px; width:100%}
+  .close input:focus-visible{outline:2px solid var(--accent); outline-offset:1px}
+  .close .fine{font-size:12px; color:var(--ink-2); margin-top:10px; text-align:center}
+
+  footer{border-top:1px solid var(--line); padding:22px 0 40px; text-align:center; font-size:12.5px; color:var(--ink-2); line-height:1.9}
+  footer a{color:var(--steel)}
+
+  /* ---- Full-screen demo overlay (mobile tap-through) ---- */
+  .demov{position:fixed; inset:0; z-index:50; background:var(--ground); display:flex; flex-direction:column}
+  .demov[hidden]{display:none}
+  .demov__bar{display:flex; align-items:center; justify-content:space-between; gap:12px; padding:10px 14px; background:var(--band); color:var(--band-ink); flex:none}
+  .demov__bar span{font-family:"Barlow Condensed",sans-serif; font-weight:600; font-size:16px; letter-spacing:.08em; text-transform:uppercase}
+  .demov__bar button{border:1px solid rgba(242,236,226,.35); background:none; color:var(--band-ink); font:inherit; font-size:14px; padding:6px 14px; border-radius:8px; cursor:pointer}
+  .demov__bar button:focus-visible{outline:2px solid var(--accent); outline-offset:2px}
+  .demov iframe{flex:1; width:100%; border:0; display:block}
+
+  /* ---- Loss calculator: dark spotlight band, high on the page ---- */
+  .loss{border-top:0; padding:26px 0 30px}
+  .loss__in{background:var(--band); color:var(--band-ink); border-radius:20px; padding:26px 22px; display:flex; flex-direction:column; gap:22px}
+  .loss__copy .eyebrow{color:var(--accent)}
+  .loss__copy h2{color:var(--band-ink); margin-top:6px}
+  .loss__copy .lede{color:var(--band-mute); margin-top:8px}
+  .loss .calc{background:none; border:0; padding:0; margin:0}
+  .loss .calc label{color:var(--band-mute); font-size:14.5px; margin:0 0 8px}
+  .loss .calc label:not(:first-child){margin-top:20px}
+  .loss .calc label output{color:var(--band-ink); font-size:16px}
+  .loss .calc input[type=range]{accent-color:var(--accent)}
+  .loss .result{margin-top:24px; padding-top:18px; border-top:1px solid rgba(242,236,226,.18); display:flex; flex-direction:column; gap:10px}
+  .result__row{display:flex; align-items:baseline; justify-content:space-between; gap:12px}
+  .result__row span{font-size:14.5px; color:var(--band-mute)}
+  .loss .calc .result__row b{font-family:"Barlow Condensed",sans-serif; font-size:44px; line-height:1; color:var(--band-alert); font-variant-numeric:tabular-nums}
+  .result__row--yr span{font-size:13.5px}
+  .loss .calc .result__row--yr b{font-size:26px; color:var(--band-ink); opacity:.8}
+  .vs{margin-top:18px; background:rgba(242,236,226,.08); border-radius:12px; padding:13px 16px; display:flex; flex-wrap:wrap; gap:6px 14px; justify-content:space-between; font-size:14.5px; color:var(--band-mute)}
+  .vs b{color:var(--accent)}
+  .vs #payback{color:var(--band-ink); font-weight:600}
+  .loss .fine{color:var(--band-mute); opacity:.8; margin-top:12px; font-size:12px}
+
+  @media (min-width:900px){
+    .loss{display:block; padding:34px 0 40px}
+    .loss__in{display:grid; grid-template-columns:1fr 1fr; gap:56px; padding:42px 44px; align-items:center}
+    .loss__copy h2{font-size:38px}
+    .loss .calc .result__row b{font-size:56px}
+    .loss .calc .result__row--yr b{font-size:30px}
+  }
+
+  /* ---- Desktop: use the full width with layout, not stretched text ---- */
+  @media (min-width:900px){
+    .wrap{max-width:1120px; padding:0 32px}
+
+    .hero{padding:64px 0 52px; display:grid; grid-template-columns:1.08fr .92fr; gap:22px 64px; align-items:center}
+    .hero h1{grid-column:1; grid-row:1; font-size:60px}
+    .hero p.sub{grid-column:1; grid-row:2; font-size:19px; max-width:52ch}
+    .hero .cta{grid-column:1; grid-row:3; justify-self:start; width:auto; padding:17px 44px; margin-top:8px}
+    .hero .strip{grid-column:2; grid-row:1 / span 3; margin-top:0; flex-direction:column; gap:10px}
+    .strip .st{display:flex; align-items:center; gap:14px; text-align:left; padding:15px 18px}
+    .strip .st .t{font-size:24px; flex:none}
+    .strip .st b{margin-top:0; font-size:15px}
+    .strip .st p{margin-top:2px; font-size:12.5px}
+
+    section{padding:52px 0; display:grid; grid-template-columns:minmax(260px,370px) 1fr; gap:6px 64px; align-items:start}
+    section > .eyebrow{grid-column:1; grid-row:1}
+    section > h2{grid-column:1; grid-row:2; font-size:36px}
+    section > .lede{grid-column:1; grid-row:3; max-width:40ch}
+    section > .phone,
+    section > .calc,
+    section > .frame-wrap,
+    section > .steps,
+    section > .plans,
+    section > .faq{grid-column:2; grid-row:1 / span 4; margin-top:0}
+
+    .plans{flex-direction:row; align-items:stretch}
+    .plan{flex:1}
+    .steps{gap:12px}
+
+    .close{padding:44px 40px; margin:44px 0}
+    .close h2{font-size:34px}
+    .close form{max-width:460px; margin:18px auto 0}
+  }
+  @media (prefers-reduced-motion: no-preference){
+    .hero h1, .hero .sub, .strip{animation:rise .4s ease both}
+    @keyframes rise{from{opacity:0; transform:translateY(8px)} to{opacity:1; transform:none}}
+  }
+</style>
+
+<header><div class="wrap"><span class="logo">B</span><span class="brand">BUENO</span><span class="tag-es">siempre contesta</span></div></header>
+
+<div class="wrap">
+  <div class="hero">
+    <h1>EVERY CALL YOU MISS CALLS <em>THE NEXT SHOP</em> ON GOOGLE.</h1>
+    <p class="sub">You're under a car. Mid-fade. Slammed at lunch. The phone rings out — and that customer doesn't leave a voicemail. <b>We text them back in seconds, automatically,</b> with your booking link. They stay yours.</p>
+    <a class="cta" href="#try">SEE IT WORK — LIVE DEMO ▼</a>
+    <div class="strip">
+      <div class="st"><div class="t">📵</div><b>CALL MISSED</b><p>nobody could pick up</p></div>
+      <div class="st"><div class="t">⚡</div><b>9 SECONDS</b><p>auto-text fires</p></div>
+      <div class="st"><div class="t">📲</div><b>ONE TAP</b><p>they book, text or get a quote</p></div>
+      <div class="st"><div class="t">💰</div><b>JOB SAVED</b><p>instead of lost to a rival</p></div>
+    </div>
+  </div>
+
+  <section class="loss" id="loss">
+    <div class="loss__in">
+      <div class="loss__copy">
+        <span class="eyebrow">THE MATH</span>
+        <h2>WHAT ARE MISSED CALLS<br>COSTING YOU RIGHT NOW?</h2>
+        <p class="lede">Move the sliders to your shop's real numbers. Most owners are shocked by the second one.</p>
+      </div>
+      <div class="calc">
+        <label for="job">Average job at your shop <output id="jobOut">$250</output></label>
+        <input type="range" id="job" min="30" max="1500" step="10" value="250" aria-label="Average job value">
+        <label for="miss">Calls you miss per week <output id="missOut">10</output></label>
+        <input type="range" id="miss" min="2" max="60" step="1" value="10" aria-label="Missed calls per week">
+        <div class="result">
+          <div class="result__row"><span>Walking out the door each month</span><b id="lost">$2,706</b></div>
+          <div class="result__row result__row--yr"><span>Every year</span><b id="lostYr">$32,472</b></div>
+        </div>
+        <div class="vs"><span>Bueno costs <b>$99/month.</b></span><span id="payback">One saved job covers it.</span></div>
+        <p class="fine">Deliberately conservative — it assumes 3 out of every 4 missed callers were never going to buy anything.</p>
+      </div>
+    </div>
+  </section>
+  <section>
+    <span class="eyebrow">WHAT YOUR CUSTOMER SEES</span>
+    <h2>NO ROBOT MENUS. A HUMAN-FEELING TEXT.</h2>
+    <p class="lede">Everyone hates "press 2 for hours." Your customers get this instead:</p>
+    <div class="phone">
+      <div class="meta">Today 12:41 PM</div>
+      <div class="miss">📵 Outgoing call · no answer · 0:22</div>
+      <div class="bubble">Sorry we missed you at <b>your shop's name</b>! We're with a customer right now. Tap here and we'll take care of you right away: <a>yourshop.com/help</a></div>
+      <div class="note">🤖 Sent automatically — you never touch a phone</div>
+    </div>
+  </section>
+
+  <section id="try">
+    <span class="eyebrow">TRY IT YOURSELF</span>
+    <h2>THIS IS LIVE — GO AHEAD, TAP IT.</h2>
+    <p class="lede">A real demo of what your customers get (sample shop). Book a slot, request a quote — it all works:</p>
+    <div class="frame-wrap">
+      <div class="devframe">
+        <iframe src="rescue-demo.html?embed=1" title="Live demo — customer options page" loading="lazy"></iframe>
+      </div>
+    </div>
+    <a class="cta demo-open" href="rescue-demo.html" id="demoOpen">OPEN THE LIVE DEMO ►</a>
+  </section>
+
+  <section>
+    <span class="eyebrow">YOUR SIDE OF IT</span>
+    <h2>WHAT LANDS ON <em style="font-style:normal;color:var(--accent)">YOUR</em> PHONE.</h2>
+    <p class="lede">Every rescue reports for duty. You see everything, touch nothing:</p>
+    <div class="phone">
+      <div class="meta">Today</div>
+      <div class="bubble bubble--own">🛟 Missed call from (214) 555-0187 at 12:41 — text-back sent ✓</div>
+      <div class="bubble bubble--own">📅 Maria G. requested a callback after 2 PM — "brake noise, 2016 Civic"</div>
+      <div class="bubble bubble--own">📊 September report: 19 calls rescued · 7 turned into bookings</div>
+    </div>
+  </section>
+
+
+  <section>
+    <span class="eyebrow">SETUP</span>
+    <h2>15 MINUTES. NOTHING ABOUT YOUR PHONE CHANGES.</h2>
+    <div class="steps">
+      <div class="step"><div class="n">1</div><div><h3>KEEP YOUR NUMBER</h3><p>Same number on your sign, your cards, your Google. We just teach it one new trick.</p></div></div>
+      <div class="step"><div class="n">2</div><div><h3>WE SET EVERYTHING UP</h3><p>The text-back, your booking page, your message wording — done for you, in English and Spanish if you want.</p></div></div>
+      <div class="step"><div class="n">3</div><div><h3>YOU GET A MONTHLY RECEIPT</h3><p>"We rescued 19 calls this month." You see exactly what you're paying for, every month.</p></div></div>
+    </div>
+  </section>
+
+  <section>
+    <span class="eyebrow">PRICING</span>
+    <h2>LESS THAN ONE LOST JOB.</h2>
+    <div class="plans">
+      <div class="plan plan--hot"><span class="tag">MOST POPULAR</span>
+        <h3>BUENO TEXT-BACK</h3>
+        <div class="price">$99<small> /month · no contract</small></div>
+        <ul>
+          <li>Automatic text-back on every missed call</li>
+          <li>Your booking / quote page for customers</li>
+          <li>English + Spanish message options</li>
+          <li>Monthly rescued-calls report</li>
+          <li>Cancel anytime — month to month</li>
+        </ul>
+      </div>
+      <div class="plan plan--soon">
+        <h3>AI RECEPTIONIST</h3>
+        <div class="price">COMING SOON</div>
+        <ul>
+          <li>The line answers by itself — books jobs, quotes hours</li>
+          <li>Fully bilingual, sounds human</li>
+          <li>Current clients get first access</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <span class="eyebrow">STRAIGHT ANSWERS</span>
+    <h2>WHAT OWNERS ASK US</h2>
+    <div class="faq">
+      <details><summary>Do I have to change my phone number?</summary><p>No. Your number stays exactly as it is, everywhere. One forwarding setting turns the rescue on — dialed from your phone in under a minute, and we do it with you.</p></details>
+      <details><summary>What happens when I DO answer?</summary><p>Nothing. The call connects like normal. The rescue only wakes up when you can't get there.</p></details>
+      <details><summary>Is texting customers legal?</summary><p>Yes — this texts only people who just called you, one time, as a response. That's the compliant kind. We never blast, never spam, never text strangers.</p></details>
+      <details><summary>What if it doesn't rescue anything?</summary><p>Your monthly report shows every rescued call. If it's not earning its keep, cancel — month to month, no contract, no hard feelings.</p></details>
+    </div>
+  </section>
+
+  <div class="close" id="start">
+    <h2>GET SET UP THIS WEEK</h2>
+    <p>Leave your info and we'll have you live in one visit — or just tell the partner who showed you this page.</p>
+    <form onsubmit="return false">
+      <input placeholder="Your name" aria-label="Your name">
+      <input placeholder="Shop name" aria-label="Shop name">
+      <input placeholder="Best phone number" aria-label="Phone number">
+      <button class="cta" type="submit">GET BUENO ON MY LINE</button>
+    </form>
+    <p class="fine">[Form not wired yet — connects at launch] · No contract · Setup done for you</p>
+  </div>
+</div>
+
+<div class="demov" id="demoOverlay" hidden>
+  <div class="demov__bar">
+    <span>What your customer sees</span>
+    <button type="button" id="demoClose" aria-label="Close demo">✕ Close</button>
+  </div>
+  <iframe id="demoFrame" title="Live demo — customer options page"></iframe>
+</div>
+<footer><b>BUENO</b> · Every call answered · siempre contesta<br>Dallas, Texas · <a href="mailto:juliomolina65@gmail.com">juliomolina65@gmail.com</a><br><a href="/privacy">Privacy Policy</a> · <a href="/terms">Terms of Service</a> · <a href="/demo">Live demo</a></footer>
+<script>
+  var job = document.getElementById("job"), miss = document.getElementById("miss");
+  var jobOut = document.getElementById("jobOut"), missOut = document.getElementById("missOut");
+  var lost = document.getElementById("lost"), lostYr = document.getElementById("lostYr"), payback = document.getElementById("payback");
+  var upd = function () {
+    var j = +job.value, m = +miss.value;
+    jobOut.textContent = "$" + j.toLocaleString();
+    missOut.textContent = m;
+    var monthly = Math.round(j * m * 4.33 * 0.25);   // 1 in 4 missed callers = real job
+    lost.textContent = "$" + monthly.toLocaleString();
+    lostYr.textContent = "$" + (monthly * 12).toLocaleString();
+    var jobs = Math.ceil(99 / j);
+    payback.textContent = jobs <= 1 ? "One saved job covers it." : jobs + " saved jobs cover it.";
+  };
+  job.addEventListener("input", upd); miss.addEventListener("input", upd); upd();
+  // Live demo: open full-screen in-page (no popup tab, works on every phone)
+  (function () {
+    var open = document.getElementById("demoOpen");
+    var ov = document.getElementById("demoOverlay");
+    var fr = document.getElementById("demoFrame");
+    var close = document.getElementById("demoClose");
+    if (!open || !ov) return;
+    open.addEventListener("click", function (e) {
+      e.preventDefault();                       // falls back to normal navigation if JS fails
+      if (!fr.src) fr.src = "rescue-demo.html?embed=1";
+      ov.hidden = false;
+      document.body.style.overflow = "hidden";
+      close.focus();
+    });
+    var shut = function () { ov.hidden = true; document.body.style.overflow = ""; open.focus(); };
+    close.addEventListener("click", shut);
+    document.addEventListener("keydown", function (e) { if (e.key === "Escape" && !ov.hidden) shut(); });
+  })();
+</script>

@@ -1,0 +1,208 @@
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Bueno Monthly Report</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700&family=Barlow:wght@400;500;600&display=swap">
+<style>
+  :root{
+    --ground:#FAF7F2; --surface:#FFFFFF; --ink:#201B16; --ink-2:#5C544A;
+    --line:#E4DCD0; --accent:#E8850C; --accent-ink:#8A4D03; --steel:#33566B;
+    --good:#2E7D4F; --plate:#F3EDE3;
+    --band:#201B16; --band-ink:#F2ECE2; --band-mute:#A89C8C;
+  }
+  @media (prefers-color-scheme: dark){
+    :root:not([data-theme="light"]){
+      --ground:#16130F; --surface:#211D17; --ink:#F2EDE6; --ink-2:#AEA396;
+      --line:#3A332A; --accent:#F19A2C; --accent-ink:#F7C98B; --steel:#8FB3C9;
+      --good:#5CBF8A; --plate:#2C261E; --band:#2A241C;
+    }
+  }
+  :root[data-theme="dark"]{
+    --ground:#16130F; --surface:#211D17; --ink:#F2EDE6; --ink-2:#AEA396;
+    --line:#3A332A; --accent:#F19A2C; --accent-ink:#F7C98B; --steel:#8FB3C9;
+    --good:#5CBF8A; --plate:#2C261E; --band:#2A241C;
+  }
+  *{box-sizing:border-box; margin:0}
+  body{background:var(--ground); color:var(--ink); font-family:"Barlow",system-ui,sans-serif; font-size:16px; line-height:1.5; -webkit-font-smoothing:antialiased}
+  .wrap{max-width:440px; margin:0 auto; padding:18px 16px 40px}
+  .cond{font-family:"Barlow Condensed","Arial Narrow",sans-serif}
+
+  /* ---------- the report card (this is what gets screenshotted) ---------- */
+  .card{background:var(--surface); border:1px solid var(--line); border-radius:18px; overflow:hidden}
+  .card__top{background:var(--band); color:var(--band-ink); padding:20px 22px}
+  .card__top .mark{display:flex; align-items:center; gap:9px; margin-bottom:14px}
+  .card__top .logo{width:28px; height:28px; border-radius:7px; background:var(--accent); color:#231303; display:flex; align-items:center; justify-content:center; font-family:"Barlow Condensed",sans-serif; font-weight:700; font-size:16px}
+  .card__top .wordmark{font-family:"Barlow Condensed",sans-serif; font-weight:700; font-size:17px; letter-spacing:.1em}
+  .card__top .period{margin-left:auto; font-size:12.5px; color:var(--band-mute); letter-spacing:.06em; text-transform:uppercase}
+  .card__top h1{font-family:"Barlow Condensed",sans-serif; font-weight:700; font-size:26px; line-height:1.1; text-wrap:balance}
+  .card__top .sub{color:var(--band-mute); font-size:14px; margin-top:4px}
+
+  .hero{padding:26px 22px 20px; text-align:center; border-bottom:1px solid var(--line)}
+  .hero .n{font-family:"Barlow Condensed",sans-serif; font-weight:700; font-size:82px; line-height:.95; color:var(--accent); font-variant-numeric:tabular-nums}
+  .hero .lbl{font-family:"Barlow Condensed",sans-serif; font-weight:600; font-size:19px; letter-spacing:.09em; margin-top:4px}
+  .hero .note{color:var(--ink-2); font-size:14px; margin-top:10px}
+
+  .grid{display:grid; grid-template-columns:1fr 1fr; gap:1px; background:var(--line)}
+  .cell{background:var(--surface); padding:16px 18px}
+  .cell .n{font-family:"Barlow Condensed",sans-serif; font-weight:700; font-size:32px; line-height:1; font-variant-numeric:tabular-nums}
+  .cell .n.good{color:var(--good)}
+  .cell .lbl{font-size:12.5px; color:var(--ink-2); margin-top:4px; letter-spacing:.03em}
+
+  .value{background:var(--plate); padding:18px 22px; display:flex; align-items:baseline; justify-content:space-between; gap:12px}
+  .value span{font-size:14px; color:var(--ink-2); max-width:20ch}
+  .value b{font-family:"Barlow Condensed",sans-serif; font-weight:700; font-size:34px; color:var(--good); font-variant-numeric:tabular-nums}
+
+  .card__foot{padding:16px 22px; font-size:12.5px; color:var(--ink-2); text-align:center}
+  .card__foot b{letter-spacing:.06em; color:var(--ink)}
+
+  /* ---------- the text version to paste into a message ---------- */
+  .sms{margin-top:24px; background:var(--surface); border:1px solid var(--line); border-radius:14px; padding:18px}
+  .sms h2{font-family:"Barlow Condensed",sans-serif; font-weight:600; font-size:16px; letter-spacing:.09em; color:var(--ink-2); margin-bottom:10px}
+  .sms textarea{width:100%; min-height:120px; border:1px solid var(--line); border-radius:10px; background:var(--ground); color:var(--ink); font:inherit; font-size:15px; padding:12px; resize:vertical}
+  .sms textarea:focus-visible{outline:2px solid var(--accent); outline-offset:1px}
+  .sms button{margin-top:10px; border:0; border-radius:9px; background:var(--accent); color:#231303; font-family:"Barlow Condensed",sans-serif; font-weight:700; font-size:17px; letter-spacing:.05em; padding:11px 20px; cursor:pointer}
+  .sms button:focus-visible{outline:3px solid var(--steel); outline-offset:2px}
+  .sms .ok{display:inline-block; margin-left:10px; color:var(--good); font-size:14px}
+  .sms .ok[hidden]{display:none}
+
+  /* ---------- the fill-in panel (hidden when URL has the numbers) ---------- */
+  .panel{margin-top:24px; background:var(--surface); border:1px dashed var(--line); border-radius:14px; padding:18px}
+  .panel h2{font-family:"Barlow Condensed",sans-serif; font-weight:600; font-size:16px; letter-spacing:.09em; color:var(--ink-2); margin-bottom:4px}
+  .panel p.hint{font-size:13px; color:var(--ink-2); margin-bottom:14px}
+  .row{display:grid; grid-template-columns:1fr 1fr; gap:12px}
+  .panel label{display:block; font-size:12.5px; font-weight:600; color:var(--ink-2); margin:10px 0 5px; letter-spacing:.03em}
+  .panel input{width:100%; border:1px solid var(--line); border-radius:9px; background:var(--ground); color:var(--ink); font:inherit; font-size:15px; padding:10px 12px}
+  .panel input:focus-visible{outline:2px solid var(--accent); outline-offset:1px}
+  .panel .link{margin-top:14px; font-size:12.5px; color:var(--ink-2); word-break:break-all}
+  .panel .link a{color:var(--steel)}
+</style>
+
+<div class="wrap">
+
+  <div class="card" id="card">
+    <div class="card__top">
+      <div class="mark">
+        <span class="logo">B</span><span class="wordmark">BUENO</span>
+        <span class="period" id="period">SEPTEMBER 2026</span>
+      </div>
+      <h1 id="shopName">Marino &amp; Sons Auto Care</h1>
+      <p class="sub">Your month in rescued calls</p>
+    </div>
+
+    <div class="hero">
+      <div class="n" id="rescued">19</div>
+      <div class="lbl">CALLS RESCUED</div>
+      <p class="note">Nineteen customers couldn't reach you — and got your booking link instead of a voicemail beep.</p>
+    </div>
+
+    <div class="grid">
+      <div class="cell"><div class="n good" id="acted">7</div><div class="lbl">Booked, texted or asked for a quote</div></div>
+      <div class="cell"><div class="n" id="afterHours">6</div><div class="lbl">Came in after hours</div></div>
+    </div>
+
+    <div class="value">
+      <span id="valueLabel">Work that came back to you</span>
+      <b id="value">$1,750</b>
+    </div>
+
+    <p class="card__foot">Rescued by <b>BUENO</b> · siempre contesta</p>
+  </div>
+
+  <div class="sms">
+    <h2>TEXT TO SEND WITH IT</h2>
+    <textarea id="smsBox" aria-label="Message to send"></textarea>
+    <button type="button" id="copyBtn">COPY</button><span class="ok" id="copied" hidden>copied ✓</span>
+  </div>
+
+  <div class="panel" id="panel">
+    <h2>FILL IN THIS MONTH'S NUMBERS</h2>
+    <p class="hint">Pull the counts from the Twilio logs for that client's number. The card and the message update as you type.</p>
+    <label for="fShop">Shop name</label>
+    <input id="fShop" value="Marino &amp; Sons Auto Care">
+    <div class="row">
+      <div><label for="fMonth">Month</label><input id="fMonth" value="September 2026"></div>
+      <div><label for="fRescued">Calls rescued</label><input id="fRescued" type="number" min="0" value="19"></div>
+    </div>
+    <div class="row">
+      <div><label for="fActed">Took action</label><input id="fActed" type="number" min="0" value="7"></div>
+      <div><label for="fAfter">After hours</label><input id="fAfter" type="number" min="0" value="6"></div>
+    </div>
+    <div class="row">
+      <div><label for="fJob">Their average job ($)</label><input id="fJob" type="number" min="0" value="250"></div>
+      <div><label for="fName">Owner's first name</label><input id="fName" value="Joe"></div>
+    </div>
+    <p class="link">Shareable link: <a id="shareLink" href="#">generating…</a></p>
+  </div>
+</div>
+
+<script>
+  var $ = function (s) { return document.querySelector(s); };
+  var q = new URLSearchParams(location.search);
+
+  var words = ["Zero","One","Two","Three","Four","Five","Six","Seven","Eight","Nine","Ten",
+               "Eleven","Twelve","Thirteen","Fourteen","Fifteen","Sixteen","Seventeen","Eighteen","Nineteen","Twenty"];
+  var spell = function (n) { return n <= 20 ? words[n] : String(n); };
+
+  var read = function () {
+    return {
+      shop: $("#fShop").value.trim() || "Your shop",
+      month: $("#fMonth").value.trim(),
+      rescued: Math.max(0, parseInt($("#fRescued").value, 10) || 0),
+      acted: Math.max(0, parseInt($("#fActed").value, 10) || 0),
+      after: Math.max(0, parseInt($("#fAfter").value, 10) || 0),
+      job: Math.max(0, parseInt($("#fJob").value, 10) || 0),
+      name: $("#fName").value.trim(),
+    };
+  };
+
+  var render = function () {
+    var d = read();
+    $("#shopName").textContent = d.shop;
+    $("#period").textContent = d.month.toUpperCase();
+    $("#rescued").textContent = d.rescued;
+    $("#acted").textContent = d.acted;
+    $("#afterHours").textContent = d.after;
+
+    $(".hero .note").textContent = d.rescued === 0
+      ? "No missed calls this month — your line was covered the whole way."
+      : spell(d.rescued) + " customer" + (d.rescued === 1 ? "" : "s") +
+        " couldn't reach you — and got your booking link instead of a voicemail beep.";
+
+    // Only count what actually came back: people who took an action.
+    var value = d.acted * d.job;
+    $("#value").textContent = "$" + value.toLocaleString();
+    $("#valueLabel").textContent = d.acted + " took action × $" + d.job.toLocaleString() + " average job";
+
+    var msg = (d.name ? "Hey " + d.name + " — " : "") +
+      "your Bueno report for " + d.month + ": we rescued " + d.rescued + " missed call" +
+      (d.rescued === 1 ? "" : "s") + " at " + d.shop + ". " + d.acted +
+      " of them booked, texted or asked for a quote" +
+      (d.after ? ", and " + d.after + " came in after you were closed" : "") +
+      ". Those would have been voicemails. Anything you want changed on your page, just say the word.";
+    $("#smsBox").value = msg;
+
+    var p = new URLSearchParams({ shop: d.shop, month: d.month, rescued: d.rescued,
+      acted: d.acted, after: d.after, job: d.job, name: d.name });
+    var url = location.origin + location.pathname + "?" + p.toString();
+    $("#shareLink").textContent = url;
+    $("#shareLink").href = url;
+  };
+
+  // Prefill from the URL when a link was shared, then hide the editor.
+  ["shop:fShop", "month:fMonth", "rescued:fRescued", "acted:fActed", "after:fAfter", "job:fJob", "name:fName"]
+    .forEach(function (pair) {
+      var k = pair.split(":")[0], id = pair.split(":")[1];
+      if (q.has(k)) $("#" + id).value = q.get(k);
+    });
+  if (q.has("rescued")) $("#panel").style.display = "none";
+
+  $("#panel").addEventListener("input", render);
+
+  $("#copyBtn").addEventListener("click", function () {
+    var box = $("#smsBox");
+    box.select();
+    var done = function () { $("#copied").hidden = false; setTimeout(function () { $("#copied").hidden = true; }, 1800); };
+    if (navigator.clipboard) navigator.clipboard.writeText(box.value).then(done, done);
+    else { try { document.execCommand("copy"); done(); } catch (e) {} }
+  });
+
+  render();
+</script>
