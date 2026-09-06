@@ -93,6 +93,11 @@ window.LANG = {
     okCbBody: "You're in the queue. We'll ring you back at the number you called from.",
     okQuoteTitle: "ON IT",
     okQuoteBody: "We'll look as soon as we're free — you'll get a ballpark by text, usually within the hour.",
+    yourInfo: "SO WE CAN REACH YOU",
+    namePh: "Your name",
+    phonePh: "Your phone number",
+    sending: "SENDING…",
+    okFallback: "We got it and we will be in touch. If you do not hear back shortly, call us at {phone}.",
     poweredBy: "powered by",
   },
   es: {
@@ -122,6 +127,11 @@ window.LANG = {
     okCbBody: "Ya estás en la lista. Te devolvemos la llamada al número desde el que llamaste.",
     okQuoteTitle: "RECIBIDO",
     okQuoteBody: "Lo revisamos en cuanto podamos — te mandamos un estimado por mensaje, normalmente dentro de una hora.",
+    yourInfo: "PARA PODER CONTACTARTE",
+    namePh: "Tu nombre",
+    phonePh: "Tu número de teléfono",
+    sending: "ENVIANDO…",
+    okFallback: "Lo recibimos y te contactamos pronto. Si no sabes de nosotros, llámanos al {phone}.",
     poweredBy: "con tecnología de",
   },
 };

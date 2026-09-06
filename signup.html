@@ -101,6 +101,7 @@
       </div>
 
       <button class="go" type="submit">START MY 14 DAYS FREE</button>
+      <p class="err" id="sendErr" hidden></p>
       <p class="fine">No card today · No contract · Cancel anytime</p>
     </form>
 
@@ -122,7 +123,7 @@
       <b>WHAT WE'LL SET UP</b>
       <p id="summary" style="margin-top:8px; color:var(--ink-2)"></p>
     </div>
-    <p class="fine">[Demo form — not wired to a backend yet]</p>
+    <p class="fine" id="doneNote">We just emailed your receipt. Watch your phone.</p>
   </div>
 </div>
 
@@ -153,13 +154,63 @@
     if (!/^\S+@\S+\.\S+$/.test($("#email").value.trim())) ok = fail("#emailErr", "Enter a valid email.") && ok;
     if (!ok) { document.querySelector(".err:not([hidden])").scrollIntoView({ block: "center" }); return; }
 
-    // TODO(backend): POST to the signup endpoint + create the Twilio number.
+    // ---- where signups go -------------------------------------------------
+    // Get a free key at web3forms.com (enter your email, they send it to you).
+    // Paste it below and every signup lands in your inbox within seconds.
+    var FORM_KEY = "PASTE-YOUR-WEB3FORMS-KEY-HERE";
+
+    var biz = $("#biz").value.trim();
+    var bizPhone = $("#phone").value.trim();
+    var alertTo = same.checked ? bizPhone : cell.value.trim();
+    var mail = $("#email").value.trim();
+
     $("#summary").textContent =
-      $("#biz").value.trim() + " · calls to " + $("#phone").value.trim() +
-      " · alerts to " + (same.checked ? "the same number" : cell.value.trim()) +
-      " · receipts to " + $("#email").value.trim();
-    $("#formSide").style.display = "none";
-    $("#done").classList.add("on");
+      biz + " · calls to " + bizPhone +
+      " · alerts to " + (same.checked ? "the same number" : alertTo) +
+      " · receipts to " + mail;
+
+    var done = function (note) {
+      if (note) $("#doneNote").textContent = note;
+      $("#formSide").style.display = "none";
+      $("#done").classList.add("on");
+      window.scrollTo(0, 0);
+    };
+
+    // No key yet: behave like the demo instead of silently losing the signup.
+    if (FORM_KEY.indexOf("PASTE") === 0) {
+      done("[Demo mode — add your Web3Forms key in signup.html to receive these]");
+      return;
+    }
+
+    var btn = $(".go");
+    btn.disabled = true;
+    btn.textContent = "SENDING…";
+
+    fetch("https://api.web3forms.com/submit", {
+      method: "POST",
+      headers: { "Content-Type": "application/json", Accept: "application/json" },
+      body: JSON.stringify({
+        access_key: FORM_KEY,
+        subject: "New Bueno signup — " + biz,
+        from_name: "Bueno signup",
+        Business: biz,
+        Business_phone: bizPhone,
+        Alerts_to: alertTo,
+        Email: mail,
+      }),
+    })
+      .then(function (r) { return r.json(); })
+      .then(function (d) {
+        if (d && d.success) { done(); }
+        else { throw new Error(d && d.message ? d.message : "send failed"); }
+      })
+      .catch(function () {
+        btn.disabled = false;
+        btn.textContent = "START MY 14 DAYS FREE";
+        var err = $("#sendErr");
+        err.textContent = "That didn't go through. Check your connection and try again, or text us at (214) 555-0100 and we'll set you up.";
+        err.hidden = false;
+      });
     window.scrollTo(0, 0);
   });
 

@@ -211,24 +211,36 @@
       }).join("") + "</div>";
   };
 
+  // Every request needs a callback number — the owner has to reach them.
+  var contact = function () {
+    return '<div class="fieldlabel">' + esc(T.yourInfo) + "</div>" +
+      '<input id="cName" placeholder="' + esc(T.namePh) + '" aria-label="' + esc(T.namePh) + '">' +
+      '<div style="height:8px"></div>' +
+      '<input id="cPhone" type="tel" inputmode="tel" placeholder="' + esc(T.phonePh) + '" aria-label="' + esc(T.phonePh) + '">' +
+      '<p class="err" id="cErr" hidden></p><div style="height:14px"></div>';
+  };
+
   var build = {
     book: function () {
       return chips(T.pickDay[0] + " / " + T.pickDay[1], T.pickDay, 0, "day") +
         (shop.barbers ? chips(T.whoWith, shop.barbers, 0, "who") : "") +
         chips("", shop.slots || [], 0, "slot") +
+        contact() +
         '<button type="button" class="send" data-send="book">' + esc(T.sendBook) + "</button>";
     },
     callback: function () {
       return chips(T.cbWhen, T.cbOptions, 0, "when") +
         '<div class="fieldlabel">' + esc(T.cbNote) + "</div>" +
         '<textarea id="cbNote" aria-label="' + esc(T.cbNote) + '"></textarea>' +
-        '<div style="height:14px"></div><button type="button" class="send" data-send="callback">' + esc(T.sendCb) + "</button>";
+        '<div style="height:14px"></div>' + contact() +
+        '<button type="button" class="send" data-send="callback">' + esc(T.sendCb) + "</button>";
     },
     quote: function () {
       return '<textarea id="qText" placeholder="' + esc(shop.quoteHint || "") + '" aria-label="Describe the problem"></textarea>' +
         '<p class="err" id="qErr" hidden></p>' +
         (shop.photoUpload ? '<button type="button" class="attach" id="attach">📷 <span>' + esc(T.addPhoto) + "</span></button>" : "") +
-        '<div style="height:14px"></div><button type="button" class="send" data-send="quote">' + esc(T.sendQuote) + "</button>";
+        '<div style="height:14px"></div>' + contact() +
+        '<button type="button" class="send" data-send="quote">' + esc(T.sendQuote) + "</button>";
     },
   };
 
@@ -277,12 +289,57 @@
         return;
       }
     }
-    // TODO(backend): POST this to the shop's Twilio number. Static for now.
-    body.hidden = true;
-    $("#okTitle").textContent = T[kind === "book" ? "okBookTitle" : kind === "callback" ? "okCbTitle" : "okQuoteTitle"];
-    $("#okBody").textContent = T[kind === "book" ? "okBookBody" : kind === "callback" ? "okCbBody" : "okQuoteBody"];
-    ok.hidden = false;
-    setTimeout(shut, 2800);
+    // A callback number is the whole point — don't let it through without one.
+    var cPhone = $("#cPhone"), cErr = $("#cErr");
+    if (cPhone && cPhone.value.replace(/\D/g, "").length < 10) {
+      cErr.textContent = shop.lang === "es" ? "Necesitamos tu número para llamarte." : "We need a number to reach you on.";
+      cErr.hidden = false;
+      cPhone.focus();
+      return;
+    }
+
+    var pressed = function (group) {
+      var row = $('[data-group="' + group + '"]');
+      if (!row) return "";
+      var on = row.querySelector('.chip[aria-pressed="true"]');
+      return on ? on.textContent : "";
+    };
+
+    var details = {
+      name: $("#cName") ? $("#cName").value.trim().slice(0, 60) : "",
+      phone: cPhone ? cPhone.value.trim().slice(0, 24) : "",
+    };
+    if (kind === "book") {
+      details.when = (pressed("day") + " " + pressed("slot")).trim();
+      if (shop.barbers) details.staff = pressed("who");
+    } else if (kind === "callback") {
+      details.when = pressed("when");
+      details.note = $("#cbNote") ? $("#cbNote").value.trim().slice(0, 300) : "";
+    } else if (kind === "quote") {
+      details.note = $("#qText") ? $("#qText").value.trim().slice(0, 500) : "";
+    }
+
+    send.disabled = true;
+    send.textContent = T.sending;
+
+    var finish = function (delivered) {
+      body.hidden = true;
+      $("#okTitle").textContent = T[kind === "book" ? "okBookTitle" : kind === "callback" ? "okCbTitle" : "okQuoteTitle"];
+      $("#okBody").textContent = delivered
+        ? T[kind === "book" ? "okBookBody" : kind === "callback" ? "okCbBody" : "okQuoteBody"]
+        : T.okFallback.replace("{phone}", shop.phone || "");
+      ok.hidden = false;
+      setTimeout(shut, delivered ? 2800 : 5000);
+    };
+
+    fetch("/api/request", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ slug: slug, kind: kind, details: details }),
+    })
+      .then(function (r) { return r.json(); })
+      .then(function (d) { finish(!!(d && d.ok)); })
+      .catch(function () { finish(false); });
   });
 
   body.addEventListener("input", function (e) {
