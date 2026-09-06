@@ -7,4 +7,6 @@
 /demo       /rescue-demo.html       200
 /privacy    /privacy.html           200
 /terms      /terms.html             200
+/messaging  /messaging.html         200
+/newclient  /newclient.html         200
 /           /rescue-pitch.html      200

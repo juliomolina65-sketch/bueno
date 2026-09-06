@@ -87,6 +87,21 @@ try {
             $path = ($rawPath -split '[?#]')[0]
             $path = [System.Uri]::UnescapeDataString($path)
             if ($path -eq '/' -or $path -eq '') { $path = '/index.html' }
+            # --- clean URLs: mirror server.js so local == production -------
+            if ($path -match '^/b(/|$)') { $path = '/b.html' }
+            $routes = @{
+                '/'          = '/rescue-pitch.html'
+                '/index.html'= '/rescue-pitch.html'
+                '/signup'    = '/signup.html'
+                '/partners'  = '/rescue-partners.html'
+                '/report'    = '/report.html'
+                '/demo'      = '/rescue-demo.html'
+                '/privacy'   = '/privacy.html'
+                '/terms'     = '/terms.html'
+                '/messaging' = '/messaging.html'
+                '/newclient' = '/newclient.html'
+            }
+            if ($routes.ContainsKey($path)) { $path = $routes[$path] }
 
             # --- resolve safely inside root --------------------------------
             $relative = $path.TrimStart('/').Replace('/', [System.IO.Path]::DirectorySeparatorChar)

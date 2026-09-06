@@ -1,0 +1,102 @@
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Bueno — How Our Messaging Works</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700&family=Barlow:wght@400;500;600&display=swap">
+<style>
+  :root{
+    --ground:#FAF7F2; --surface:#FFFFFF; --ink:#201B16; --ink-2:#5C544A;
+    --line:#E4DCD0; --accent:#E8850C; --steel:#33566B; --good:#2E7D4F; --plate:#F3EDE3;
+  }
+  @media (prefers-color-scheme: dark){
+    :root:not([data-theme="light"]){
+      --ground:#16130F; --surface:#211D17; --ink:#F2EDE6; --ink-2:#AEA396;
+      --line:#3A332A; --accent:#F19A2C; --steel:#8FB3C9; --good:#5CBF8A; --plate:#2C261E;
+    }
+  }
+  :root[data-theme="dark"]{
+    --ground:#16130F; --surface:#211D17; --ink:#F2EDE6; --ink-2:#AEA396;
+    --line:#3A332A; --accent:#F19A2C; --steel:#8FB3C9; --good:#5CBF8A; --plate:#2C261E;
+  }
+  *{box-sizing:border-box; margin:0}
+  body{background:var(--ground); color:var(--ink); font-family:"Barlow",system-ui,sans-serif; font-size:16.5px; line-height:1.65; -webkit-font-smoothing:antialiased}
+  .wrap{max-width:720px; margin:0 auto; padding:0 20px 60px}
+  header{padding:14px 0; border-bottom:1px solid var(--line); margin-bottom:36px}
+  header .in{max-width:720px; margin:0 auto; padding:0 20px; display:flex; align-items:center; gap:10px}
+  .logo{width:32px; height:32px; border-radius:8px; background:var(--accent); color:#231303; display:flex; align-items:center; justify-content:center; font-weight:700; font-family:"Barlow Condensed",sans-serif; font-size:18px}
+  .brand{font-family:"Barlow Condensed",sans-serif; font-weight:700; font-size:20px; letter-spacing:.08em}
+  .brand a{color:inherit; text-decoration:none}
+  h1{font-family:"Barlow Condensed",sans-serif; font-weight:700; font-size:38px; line-height:1.05; text-wrap:balance}
+  .lede{color:var(--ink-2); margin-top:12px; font-size:17.5px}
+  h2{font-family:"Barlow Condensed",sans-serif; font-weight:700; font-size:23px; letter-spacing:.02em; margin:34px 0 10px}
+  p{margin-bottom:14px; color:var(--ink-2)}
+  p strong, li strong{color:var(--ink)}
+  ul{margin:0 0 14px 20px; color:var(--ink-2)}
+  li{margin-bottom:9px}
+  a{color:var(--steel)}
+
+  .steps{display:flex; flex-direction:column; gap:10px; margin:22px 0 8px}
+  .step{display:flex; gap:14px; background:var(--surface); border:1px solid var(--line); border-radius:12px; padding:15px 17px}
+  .step .n{font-family:"Barlow Condensed",sans-serif; font-weight:700; font-size:21px; color:var(--accent); flex:none; width:24px}
+  .step p{margin:0; font-size:15.5px}
+
+  .sample{background:var(--plate); border-radius:12px; padding:16px 18px; margin:18px 0}
+  .sample .who{font-size:12.5px; color:var(--ink-2); letter-spacing:.06em; text-transform:uppercase; margin-bottom:8px}
+  .sample .bubble{background:var(--surface); border:1px solid var(--line); border-radius:14px; border-bottom-left-radius:4px; padding:11px 14px; font-size:15px; color:var(--ink)}
+
+  .never{background:var(--surface); border:1px solid var(--line); border-radius:12px; padding:18px 20px; margin:20px 0}
+  .never li{padding-left:24px; position:relative; color:var(--ink-2)}
+  .never li::before{content:"✕"; position:absolute; left:0; color:#C0392B; font-weight:700}
+  .never ul{margin-left:0; list-style:none}
+
+  .keys{display:grid; grid-template-columns:repeat(auto-fit,minmax(200px,1fr)); gap:12px; margin:18px 0}
+  .key{background:var(--surface); border:1px solid var(--line); border-radius:12px; padding:15px 17px}
+  .key b{font-family:"Barlow Condensed",sans-serif; font-size:20px; letter-spacing:.06em; display:block; margin-bottom:4px}
+  .key span{font-size:14.5px; color:var(--ink-2)}
+
+  footer{border-top:1px solid var(--line); margin-top:44px; padding-top:20px; font-size:13.5px; color:var(--ink-2)}
+</style>
+
+<header><div class="in"><span class="logo">B</span><span class="brand"><a href="/">BUENO</a></span></div></header>
+
+<div class="wrap">
+  <h1>HOW OUR MESSAGING WORKS</h1>
+  <p class="lede">Bueno sends one kind of text message, to one kind of person: someone who just called a local business and didn't get an answer.</p>
+
+  <h2>When a message is sent</h2>
+  <div class="steps">
+    <div class="step"><span class="n">1</span><p>You call a local business — a repair shop, a barbershop, a restaurant — because you want to reach them.</p></div>
+    <div class="step"><span class="n">2</span><p>Nobody picks up. The business has asked us to catch those calls instead of sending you to voicemail.</p></div>
+    <div class="step"><span class="n">3</span><p>We text you back once, from that business, with a link so you can book a time, ask for a callback, request a quote, or get directions.</p></div>
+  </div>
+
+  <p><strong>Your own call is the consent.</strong> You reached out to the business first, and our reply goes only to the number you called from. If you never call, you never hear from us.</p>
+
+  <h2>What the message looks like</h2>
+  <div class="sample">
+    <div class="who">Example</div>
+    <div class="bubble">Sorry we missed you at Marino &amp; Sons Auto! Tap here and we'll take care of you right away: buenoanswers.com/b/marinos-auto</div>
+  </div>
+
+  <h2>The details</h2>
+  <div class="keys">
+    <div class="key"><b>FREQUENCY</b><span>One message per unanswered call. No recurring campaigns, no follow-up blasts.</span></div>
+    <div class="key"><b>STOP</b><span>Reply STOP to any message and we stop texting you. It takes effect immediately.</span></div>
+    <div class="key"><b>HELP</b><span>Reply HELP and we'll reply with how to reach the business and how to reach us.</span></div>
+    <div class="key"><b>RATES</b><span>Message and data rates may apply, depending on your mobile plan.</span></div>
+  </div>
+  <p>Mobile carriers are not liable for delayed or undelivered messages.</p>
+
+  <h2>What we never do</h2>
+  <div class="never">
+    <ul>
+      <li>Send marketing, promotions, or sales messages</li>
+      <li>Text anyone who has not called the business first</li>
+      <li>Buy, rent, or use purchased phone number lists</li>
+      <li>Sell or share your number with anyone for their own marketing</li>
+    </ul>
+  </div>
+
+  <h2>Questions or requests</h2>
+  <p>To ask what information we hold about you, or to have it deleted, email <a href="mailto:hello@buenoanswers.com">hello@buenoanswers.com</a> and we'll respond within 30 days. Full details are in our <a href="/privacy">Privacy Policy</a>.</p>
+
+  <footer><a href="/">← Back to Bueno</a> · <a href="/privacy">Privacy Policy</a> · <a href="/terms">Terms of Service</a></footer>
+</div>

@@ -42,6 +42,8 @@ const ROUTES = {
   "/report": "report.html",
   "/privacy": "privacy.html",
   "/terms": "terms.html",
+  "/messaging": "messaging.html",
+  "/newclient": "newclient.html",
   "/demo": "rescue-demo.html",
 };
 

@@ -69,6 +69,80 @@
     .demo-open{display:block}
   }
 
+
+  /* ---- Text-message thread: must read instantly as a real phone screen ---- */
+  :root{
+    --th-bg:#F2F2F7; --th-bar:#F8F8FA; --th-line:#D9D9DE; --th-bubble:#E9E9EB;
+    --th-text:#101014; --th-meta:#8A8A8E; --th-link:#0B69D4; --th-send:#0B69D4;
+  }
+  @media (prefers-color-scheme: dark){
+    :root:not([data-theme="light"]){
+      --th-bg:#151517; --th-bar:#1E1E21; --th-line:#33333A; --th-bubble:#333338;
+      --th-text:#F4F4F6; --th-meta:#9A9AA2; --th-link:#5AA9FF; --th-send:#3B82F6;
+    }
+  }
+  :root[data-theme="dark"]{
+    --th-bg:#151517; --th-bar:#1E1E21; --th-line:#33333A; --th-bubble:#333338;
+    --th-text:#F4F4F6; --th-meta:#9A9AA2; --th-link:#5AA9FF; --th-send:#3B82F6;
+  }
+
+  .thread{
+    max-width:340px; margin:18px auto 0; background:var(--th-bg);
+    border:1px solid var(--th-line); border-radius:22px; overflow:hidden;
+    box-shadow:0 10px 26px rgba(20,20,15,.13); font-family:-apple-system,"Segoe UI",Roboto,system-ui,sans-serif;
+  }
+  .thread__bar{
+    display:flex; align-items:center; gap:9px; padding:10px 14px;
+    background:var(--th-bar); border-bottom:1px solid var(--th-line);
+  }
+  .thread__bar .back{width:9px; height:16px; flex:none; stroke:var(--th-link); fill:none; stroke-width:2.2; stroke-linecap:round; stroke-linejoin:round}
+  .thread__av{
+    width:32px; height:32px; border-radius:50%; flex:none; background:var(--accent); color:#231303;
+    display:flex; align-items:center; justify-content:center; font-weight:700; font-size:14px;
+  }
+  .thread__who{min-width:0}
+  .thread__who b{display:block; font-size:14.5px; font-weight:600; color:var(--th-text); line-height:1.2; white-space:nowrap; overflow:hidden; text-overflow:ellipsis}
+  .thread__who span{font-size:11.5px; color:var(--th-meta)}
+
+  .thread__body{padding:14px 12px 10px; display:flex; flex-direction:column; gap:7px}
+  .thread__time{text-align:center; font-size:11.5px; color:var(--th-meta); margin:2px 0}
+  .thread__time b{color:var(--th-text); font-weight:600}
+  .thread__call{
+    align-self:center; display:flex; align-items:center; gap:7px;
+    font-size:12.5px; color:#D9483B; background:rgba(217,72,59,.10);
+    border-radius:999px; padding:5px 12px;
+  }
+  .thread__call svg{width:13px; height:13px; stroke:currentColor; fill:none; stroke-width:2; stroke-linecap:round}
+
+  .msg{
+    align-self:flex-start; max-width:83%; background:var(--th-bubble); color:var(--th-text);
+    border-radius:19px; border-bottom-left-radius:5px; padding:9px 13px;
+    font-size:14.5px; line-height:1.4; position:relative;
+  }
+  .msg a{color:var(--th-link); text-decoration:none; word-break:break-word}
+  .msg--out{align-self:flex-end; background:var(--th-send); color:#fff; border-radius:19px; border-bottom-right-radius:5px}
+  .msg--out a{color:#fff; text-decoration:underline}
+  .thread__status{align-self:flex-start; font-size:11px; color:var(--th-meta); padding-left:4px}
+  .thread__status--r{align-self:flex-end; padding:0 4px 0 0}
+
+  .thread__input{
+    display:flex; align-items:center; gap:9px; padding:9px 12px 11px;
+    border-top:1px solid var(--th-line); background:var(--th-bar);
+  }
+  .thread__field{
+    flex:1; border:1px solid var(--th-line); border-radius:999px;
+    padding:7px 14px; font-size:13.5px; color:var(--th-meta); background:var(--th-bg);
+  }
+  .thread__send{
+    width:29px; height:29px; border-radius:50%; background:var(--th-send); flex:none;
+    display:flex; align-items:center; justify-content:center;
+  }
+  .thread__send svg{width:15px; height:15px; stroke:#fff; fill:none; stroke-width:2.4; stroke-linecap:round; stroke-linejoin:round}
+  .thread__auto{
+    display:flex; align-items:center; justify-content:center; gap:7px;
+    margin-top:12px; font-size:12.5px; color:var(--ink-2);
+  }
+  .thread__auto svg{width:15px; height:15px; stroke:currentColor; fill:none; stroke-width:1.8; stroke-linecap:round; stroke-linejoin:round}
   .calc{background:var(--surface); border:1px solid var(--line); border-radius:14px; padding:18px; margin-top:18px}
   .calc label{display:flex; justify-content:space-between; font-size:14px; color:var(--ink-2); margin:14px 0 6px}
   .calc label output{font-variant-numeric:tabular-nums; font-weight:600; color:var(--ink)}
@@ -232,12 +306,31 @@
     <span class="eyebrow">WHAT YOUR CUSTOMER SEES</span>
     <h2>NO ROBOT MENUS. A HUMAN-FEELING TEXT.</h2>
     <p class="lede">Everyone hates "press 2 for hours." Your customers get this instead:</p>
-    <div class="phone">
-      <div class="meta">Today 12:41 PM</div>
-      <div class="miss">📵 Outgoing call · no answer · 0:22</div>
-      <div class="bubble">Sorry we missed you at <b>your shop's name</b>! We're with a customer right now. Tap here and we'll take care of you right away: <a>yourshop.com/help</a></div>
-      <div class="note">🤖 Sent automatically — you never touch a phone</div>
+    <div class="thread">
+      <div class="thread__bar">
+        <svg class="back" viewBox="0 0 9 16" aria-hidden="true"><path d="M7.5 1L1.5 8l6 7"/></svg>
+        <span class="thread__av">M</span>
+        <span class="thread__who"><b>Marino &amp; Sons Auto</b><span>(214) 555-0142</span></span>
+      </div>
+      <div class="thread__body">
+        <div class="thread__time"><b>Today</b> 12:41 PM</div>
+        <div class="thread__call">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M22 16.9v3a2 2 0 0 1-2.2 2 19.8 19.8 0 0 1-8.6-3.1 19.5 19.5 0 0 1-6-6A19.8 19.8 0 0 1 2.1 4.2 2 2 0 0 1 4.1 2h3a2 2 0 0 1 2 1.7c.1 1 .4 1.9.7 2.8a2 2 0 0 1-.5 2.1L8.1 9.9a16 16 0 0 0 6 6l1.3-1.2a2 2 0 0 1 2.1-.5c.9.3 1.8.6 2.8.7a2 2 0 0 1 1.7 2z"/><path d="M17 2l5 5M22 2l-5 5"/></svg>
+          Missed call · 22 sec
+        </div>
+        <div class="thread__time">9 seconds later</div>
+        <div class="msg">Sorry we missed you at Marino &amp; Sons Auto! Tap here and we'll take care of you right away: <a href="/b/marinos-auto">buenoanswers.com/b/marinos-auto</a></div>
+        <div class="thread__status">Delivered</div>
+      </div>
+      <div class="thread__input">
+        <span class="thread__field">Text message</span>
+        <span class="thread__send"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 19V5M5 12l7-7 7 7"/></svg></span>
+      </div>
     </div>
+    <p class="thread__auto">
+      <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="4" y="8" width="16" height="12" rx="2"/><path d="M12 8V4M9 14h.01M15 14h.01"/></svg>
+      Sent automatically — you never touch a phone
+    </p>
   </section>
 
   <section id="try">
@@ -256,11 +349,23 @@
     <span class="eyebrow">YOUR SIDE OF IT</span>
     <h2>WHAT LANDS ON <em style="font-style:normal;color:var(--accent)">YOUR</em> PHONE.</h2>
     <p class="lede">Every rescue reports for duty. You see everything, touch nothing:</p>
-    <div class="phone">
-      <div class="meta">Today</div>
-      <div class="bubble bubble--own">🛟 Missed call from (214) 555-0187 at 12:41 — text-back sent ✓</div>
-      <div class="bubble bubble--own">📅 Maria G. requested a callback after 2 PM — "brake noise, 2016 Civic"</div>
-      <div class="bubble bubble--own">📊 September report: 19 calls rescued · 7 turned into bookings</div>
+    <div class="thread">
+      <div class="thread__bar">
+        <svg class="back" viewBox="0 0 9 16" aria-hidden="true"><path d="M7.5 1L1.5 8l6 7"/></svg>
+        <span class="thread__av">B</span>
+        <span class="thread__who"><b>Bueno</b><span>your alerts</span></span>
+      </div>
+      <div class="thread__body">
+        <div class="thread__time"><b>Today</b></div>
+        <div class="msg">Missed call from (214) 555-0187 at 12:41 — text-back sent ✓</div>
+        <div class="msg">Maria G. asked for a callback after 2 PM — "brake noise, 2016 Civic"</div>
+        <div class="msg">September report: 19 calls rescued · 7 turned into bookings</div>
+        <div class="thread__status">Delivered</div>
+      </div>
+      <div class="thread__input">
+        <span class="thread__field">Text message</span>
+        <span class="thread__send"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 19V5M5 12l7-7 7 7"/></svg></span>
+      </div>
     </div>
   </section>
 
@@ -333,7 +438,7 @@
   </div>
   <iframe id="demoFrame" title="Live demo — customer options page"></iframe>
 </div>
-<footer><b>BUENO</b> · Every call answered · siempre contesta<br>Dallas, Texas · <a href="mailto:juliomolina65@gmail.com">juliomolina65@gmail.com</a><br><a href="/privacy">Privacy Policy</a> · <a href="/terms">Terms of Service</a> · <a href="/demo">Live demo</a></footer>
+<footer><b>BUENO</b> · Every call answered · siempre contesta<br><a href="/privacy">Privacy Policy</a> · <a href="/terms">Terms of Service</a> · <a href="/messaging">How our messaging works</a> · <a href="/demo">Live demo</a></footer>
 <script>
   var job = document.getElementById("job"), miss = document.getElementById("miss");
   var jobOut = document.getElementById("jobOut"), missOut = document.getElementById("missOut");
